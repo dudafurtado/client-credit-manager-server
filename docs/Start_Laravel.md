@@ -38,7 +38,11 @@ Alterar a URL padrão de localhost para IP address:
 Mudar o idioma de inglês para português do Brasil
 `APP_LOCALE=pt-BR`
 
-### Passo 4: Gere a Chave da Aplicação
+### Passo 4: Instale as Dependências do Projeto
+
+`composer install`
+
+### Passo 5: Gere a Chave da Aplicação
 
 Verificar primeiro se ao criar o projeto a chave do projeto não já foi criada. Casa não exista então deve ser usado o comando abaixo.
 
@@ -48,19 +52,19 @@ O env deve então conter a seguinte váriavel:
 
 `APP_KEY=base64:`
 
-### Passo 5: Configure o Ambiente
+### Passo 6: Configure o Ambiente
 
 As váriaveis que foram alteradas no .env devem existir no env.example também, pois o Laravel não copia e não lida com elas.
 
 `cp .env.example .env`
 
-### Passo 6: Checar a View
+### Passo 7: Checar a View
 
 O arquivo de rota web cria automaticamente uma tela de boas-vindas e para verificar que até o momento todos os passos estão corretos é interessante verificar no navegador se o resultado é positivo.
 
 Abra seu navegador e vá para `http://localhost:8000` para acessar o projeto Laravel.
 
-### Passo 7: Instalar Roteamento da API
+### Passo 8: Instalar Roteamento da API
 
 Para disponibilizar o uso das rotas que possuem o prefix '/api' deve ser usado o comando abaixo.
 
@@ -68,17 +72,13 @@ Para disponibilizar o uso das rotas que possuem o prefix '/api' deve ser usado o
 
 Será criada uma rota básica para usuários que deve ser testada sem o intermediário.
 
-### Passo 8: Inicie o Servidor de Desenvolvimento
+### Passo 9: Inicie o Servidor de Desenvolvimento
 
 `php artisan serve`
 
-### Passo 9: Acessar o Projeto
+### Passo 10: Acessar o Projeto
 
 Abra o insomnia e construa uma coleção para testar as rotas seguindo a URL básica: `http://localhost:8000`.
-
-#### Obs: Instale as Dependências do Projeto
-
-`composer install`
 
 #### Como criar a API com Laravel Tutorial
 
