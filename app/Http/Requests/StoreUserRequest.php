@@ -55,9 +55,11 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'name.required' => 'Campo nome é obrigatório!',
+
             'email.required' => 'Campo email é obrigatório!',
             'email.email' => 'Necessário enviar email válido!',
             'email.unique' => 'Esse email já existe. Tente outro!',
+            
             'password.required' => 'Campo senha é obrigatório!',
             'password.min' => 'Senha com no mínimo :min caracteres!',
         ];

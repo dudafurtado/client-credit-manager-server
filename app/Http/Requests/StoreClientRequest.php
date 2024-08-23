@@ -59,16 +59,22 @@ class StoreClientRequest extends FormRequest
     {
         return [
             'name.required' => 'Campo nome é obrigatório!',
+
             'surname.required' => 'Campo sobrenome é obrigatório!',
+
             'email.required' => 'Campo email é obrigatório!',
             'email.email' => 'Necessário enviar um email válido!',
             'email.unique' => 'Esse email já existe. Tente outro!',
+
             'birth_date.required' => 'Campo data de nascimento é obrigatório!',
             'birth_date.date' => 'Data de nascimento deve ser uma data válida!',
             'birth_date.before' => 'Data de nascimento deve ser anterior a hoje!',
+
             'phone.required' => 'Campo telefone é obrigatório!',
             'phone.regex' => 'O telefone deve estar no formato (71) 99999-4774!',
+
             'address_id.exists' => 'O endereço selecionado é inválido ou não existe.',
+            
             'card_id.exists' => 'O cartão selecionado é inválido ou não existe.',
         ];
     }
