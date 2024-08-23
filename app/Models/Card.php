@@ -25,6 +25,17 @@ class Card extends Model
         'deleted_at',
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     public function client(): BelongsTo {
         return $this->belongsTo(Client::class);
     }

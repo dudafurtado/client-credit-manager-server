@@ -26,12 +26,23 @@ class Client extends Model
         'deleted_at',
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     public function address(): HasOne
     {
         return $this->hasOne(Address::class);
     }
 
-    public function card(): HasMany
+    public function cards(): HasMany
     {
         return $this->hasMany(Card::class);
     }
