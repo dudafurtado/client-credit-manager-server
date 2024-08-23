@@ -11,6 +11,8 @@ use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 use App\Models\Client;
 
+use function Laravel\Prompts\error;
+
 class ClientController extends Controller
 {
     public function index(): JsonResponse
@@ -75,6 +77,8 @@ class ClientController extends Controller
     {
         try {
             $client->delete();
+            $client->cards()->delete();
+            $client->address()->delete();
 
             return response()->json(null, 204);
         } catch (Exception $error) {
