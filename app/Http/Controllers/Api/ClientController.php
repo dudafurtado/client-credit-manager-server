@@ -21,7 +21,8 @@ class ClientController extends Controller
 
     public function show(Client $client): JsonResponse
     {
-        return response()->json($client);
+        $clientWithRelations = Client::with(['address', 'cards'])->find($client->id);
+        return response()->json($clientWithRelations);
     }
 
     public function store(StoreClientRequest $request): JsonResponse
