@@ -19,16 +19,15 @@ class ClientController extends Controller
         return response()->json($clients, 200);
     }
 
-    public function show(string $id): JsonResponse
+    public function show(Client $client): JsonResponse
     {
-        $client = Client::findOrFail($id);
         return response()->json($client);
     }
 
     public function store(StoreClientRequest $request): JsonResponse
     {
         DB::beginTransaction();
-
+        
         try {
             $client = Client::create([
                 'name' => $request->name,
@@ -38,7 +37,6 @@ class ClientController extends Controller
                 'birth_date' => $request->birth_date,
                 'phone' => $request->phone,
             ]);
-            
 
             DB::commit();
     
@@ -49,13 +47,11 @@ class ClientController extends Controller
         }
     }
 
-    public function update(UpdateClientRequest $request, string $id): JsonResponse
+    public function update(UpdateClientRequest $request, Client $client): JsonResponse
     {
         DB::beginTransaction();
 
         try {
-            $client = Client::findOrFail($id);
-
             $client->update([
                 'name' => $request->name,
                 'surname' => $request->surname,
@@ -74,10 +70,9 @@ class ClientController extends Controller
         }
     }
 
-    public function destroy(string $id): JsonResponse
+    public function destroy(Client $client): JsonResponse
     {
         try {
-            $client = Client::findOrFail($id);
             $client->delete();
 
             return response()->json(null, 204);
