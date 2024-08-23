@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Client extends Model
 {
@@ -17,8 +18,6 @@ class Client extends Model
         'email',
         'phone',
         'birth_date',
-        'address_id',
-        'card_id'
     ];
 
     protected $dates = [
@@ -26,4 +25,14 @@ class Client extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function address(): HasOne
+    {
+        return $this->hasOne(Address::class);
+    }
+
+    public function card(): HasMany
+    {
+        return $this->hasMany(Card::class);
+    }
 }

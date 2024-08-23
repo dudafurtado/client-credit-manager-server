@@ -42,6 +42,7 @@ class StoreCardRequest extends FormRequest
             'number' => ['required', 'string', 'regex:/^\d{4} \d{4} \d{4} \d{4}$/'],
             'expire_date' => 'required|string|regex:/^\d{2}\/\d{2}$/',
             'CVV' => 'required|string|size:3',
+            'client_id' => ['nullable', 'exists:clients,id'],
         ];
     }
 
@@ -59,6 +60,8 @@ class StoreCardRequest extends FormRequest
             'CVV.required' => 'O CVV é obrigatório.',
             'CVV.string' => 'O CVV deve ser uma sequência de caracteres.',
             'CVV.size' => 'O CVV deve ter exatamente 3 dígitos.',
+
+            'client_id.exists' => 'O client selecionado é inválido ou não existe.',
         ];
     }
 }

@@ -15,7 +15,8 @@ class Card extends Model
     protected $fillable = [
         'number',
         'expire_date',
-        'CVV'
+        'CVV',
+        'client_id'
     ];
 
     protected $dates = [

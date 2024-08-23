@@ -45,6 +45,7 @@ class StoreAddressRequest extends FormRequest
             'neighborhood' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:2',
+            'client_id' => ['nullable', 'exists:clients,id'],
         ];
     }
 
@@ -78,6 +79,8 @@ class StoreAddressRequest extends FormRequest
             'state.required' => 'O estado é obrigatório.',
             'state.string' => 'O estado deve ser uma sequência de caracteres.',
             'state.max' => 'O estado não pode ter mais de 2 caracteres.',
+
+            'client_id.exists' => 'O client selecionado é inválido ou não existe.',
         ];
     }
 }

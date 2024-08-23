@@ -19,6 +19,7 @@ class Address extends Model
         'street',
         'neighborhood',
         'additional_information',
+        'client_id'
     ];
 
     protected $dates = [

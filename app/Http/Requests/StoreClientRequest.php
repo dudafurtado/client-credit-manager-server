@@ -45,8 +45,6 @@ class StoreClientRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.Client::class],
             'birth_date' => ['required', 'date', 'before:today'],
             'phone' => ['required', 'string', 'regex:/^\(\d{2}\) \d{5}-\d{4}$/'],
-            'address_id' => ['nullable', 'exists:addresses,id'],
-            'card_id' => ['nullable', 'exists:cards,id'],
         ];
     }
 
@@ -72,10 +70,6 @@ class StoreClientRequest extends FormRequest
 
             'phone.required' => 'Campo telefone é obrigatório!',
             'phone.regex' => 'O telefone deve estar no formato (71) 99999-4774!',
-
-            'address_id.exists' => 'O endereço selecionado é inválido ou não existe.',
-            
-            'card_id.exists' => 'O cartão selecionado é inválido ou não existe.',
         ];
     }
 }
