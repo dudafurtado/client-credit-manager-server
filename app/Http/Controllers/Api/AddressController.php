@@ -46,19 +46,31 @@ class AddressController extends Controller
         
         try {
             $address->update([
-                'zip_code' => $request->zip_code,
-                'street' => $request->street,
-                'additional_information' => $request->additional_information,
-                'neighborhood' => $request->neighborhood,
-                'city' => $request->city,
-                'state' => $request->state,
-            ]);            
+                'zip_code' => $request->filled('zip_code') ? $request->zip_code : $address->zip_code,
+                'street' => $request->filled('street') ? $request->street : $address->street,
+                'additional_information' => $request->filled('additional_information') ? $request->additional_information : $address->additional_information,
+                'neighborhood' => $request->filled('neighborhood') ? $request->neighborhood : $address->neighborhood,
+                'city' => $request->filled('city') ? $request->city : $address->city,
+                'state' => $request->filled('state') ? $request->state : $address->state,
+            ]);
+            $address->save();         
 
             DB::commit();
     
-            return response()->json($address, 201);
+            return response()->json($address, 200);
         } catch (Exception $error) {
             DB::rollback();
+            return response()->json($error, 400);
+        }
+    }
+
+    public function destroy(Address $address): JsonResponse
+    {
+        try {
+            $address->delete();
+
+            return response()->json(null, 204);
+        } catch (Exception $error) {
             return response()->json($error, 400);
         }
     }

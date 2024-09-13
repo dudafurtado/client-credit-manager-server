@@ -46,16 +46,28 @@ class CardController extends Controller
         
         try {
             $card->update([
-                'number' => $request->number,
-                'expire_date' => $request->expire_date,
-                'CVV' => $request->CVV,
-            ]);            
+                'number' => $request->filled('number') ? $request->number : $card->number,
+                'expire_date' => $request->filled('expire_date') ? $request->expire_date : $card->expire_date,
+                'CVV' => $request->filled('CVV') ? $request->CVV : $card->CVV,
+            ]);
+            $card->save();                 
 
             DB::commit();
     
-            return response()->json($card, 201);
+            return response()->json($card, 200);
         } catch (Exception $error) {
             DB::rollback();
+            return response()->json($error, 400);
+        }
+    }
+
+    public function destroy(Card $card): JsonResponse
+    {
+        try {
+            $card->delete();
+
+            return response()->json(null, 204);
+        } catch (Exception $error) {
             return response()->json($error, 400);
         }
     }

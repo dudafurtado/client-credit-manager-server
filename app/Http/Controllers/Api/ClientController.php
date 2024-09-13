@@ -55,14 +55,14 @@ class ClientController extends Controller
         DB::beginTransaction();
 
         try {
-            $client->update([
-                'name' => $request->name,
-                'surname' => $request->surname,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'birth_date' => $request->birth_date,
-                'phone' => $request->phone,
-            ]);
+            $client->name = $request->filled('name') ? $request->name : $client->name;
+            $client->surname = $request->filled('surname') ? $request->surname : $client->surname;
+            $client->email = $request->filled('email') ? $request->email : $client->email;
+            $client->password = $request->filled('password') ? $request->password : $client->password;
+            $client->birth_date = $request->filled('birth_date') ? $request->birth_date : $client->birth_date;
+            $client->phone = $request->filled('phone') ? $request->phone : $client->phone;
+
+            $client->save();
 
             DB::commit();
 

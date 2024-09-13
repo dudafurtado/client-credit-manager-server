@@ -14,7 +14,7 @@ class UserController extends Controller
 {
     public function index (): JsonResponse 
     {
-        $users = User::orderBy('id', 'DESC')->paginate(2);
+        $users = User::paginate(10);
 
         return response()->json($users, 200);
     }
@@ -49,11 +49,11 @@ class UserController extends Controller
         DB::beginTransaction();
 
         try {
-            $user->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => $request->password
-            ]);
+            $user->name = $request->filled('name') ? $request->name : $user->name;
+            $user->email = $request->filled('email') ? $request->email : $user->email;
+            $user->password = $request->filled('password') ? $request->password : $user->password;
+
+            $user->save();
 
             DB::commit();
 
