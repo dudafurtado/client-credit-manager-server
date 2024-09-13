@@ -2,7 +2,7 @@
 
 ## Descrição
 
-O "Sistema de Gerenciamento de Clientes com Cartões de Crédito" é uma aplicação desenvolvida com Laravel para gerenciar clientes e seus cartões de crédito. A aplicação permite a administração de usuários e clientes, além de fornecer funcionalidades para gerenciamento de cartões de crédito e endereços.
+O [Sistema de Gerenciamento de Clientes com Cartões de Crédito](./Desafio_Técnico_%20Sistema_de_Gerenciamento_de_Clientes_com_Cartões_de_Crédito.pdf) é uma aplicação desenvolvida com Laravel para gerenciar clientes e seus cartões de crédito. A aplicação permite a administração de usuários e clientes, além de fornecer funcionalidades para gerenciamento de cartões de crédito e endereços.
 
 ## Sumário
 
