@@ -9,19 +9,16 @@ use App\Models\Client;
 
 class StoreClientRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
     /**
-    * Manipular falha de validação e retornar uma resposta JSON com os erros de validação.
-    *
-    * @param  \Illuminate\Contracts\Validation\Validator  $validator O objeto de validação que contém os erros de validação.
+    * 
+    * @param  \Illuminate\Contracts\Validation\Validator 
     * @throws \Illuminate\Http\Exceptions\HttpResponseException
+    *
     */
     protected function failedValidation(Validator $validator)
     {
@@ -57,8 +54,12 @@ class StoreClientRequest extends FormRequest
     {
         return [
             'name.required' => 'Campo nome é obrigatório!',
+            'name.string' => 'O nome deve ser uma sequência de caracteres.',
+            'name.max' => 'O nome não pode ter mais de :max caracteres.',
 
             'surname.required' => 'Campo sobrenome é obrigatório!',
+            'surname.string' => 'O sobrenome deve ser uma sequência de caracteres.',
+            'surname.max' => 'O sobrenome não pode ter mais de :max caracteres.',
 
             'email.required' => 'Campo email é obrigatório!',
             'email.email' => 'Necessário enviar um email válido!',
