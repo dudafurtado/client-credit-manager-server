@@ -64,6 +64,14 @@ Para criar uma nova migration, use:
 - Adicionar timestamps automaticamente: `$table->timestamps();`
 - Adicionar suporte a soft deletes: `$table->softDeletes();`
 
+#### Chave estrangeira e índices
+
+ O uso de index() após foreignId() é redundante, pois o Laravel já cria índices automaticamente para as colunas de chave estrangeira com o método foreignId().
+
+#### Nullable(false)
+
+As colunas foreignId() já são NOT NULL por padrão, então você pode remover nullable(false).
+
 ## 4. Criar um Seeder
 
 Usar o Factory para criar um seed.

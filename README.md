@@ -12,6 +12,9 @@ O [Sistema de Gerenciamento de Clientes com Cartões de Crédito](./Desafio_Téc
 - [Para Lidar com Erros](docs/Error_Dealing.md)
 - [Instalação do PHP e Composer](docs/Install_PHP.md)
 - [Inicialização do Projeto](docs/Start_Laravel.md)
+- [Tabela Pivô](docs/Pivot_Table_Relationship.md)
+- [Middleware](docs/Middleware.md)
+- [Modelando o ID da Rota](docs/Middleware.md)
 
 ## Funcionalidades
 
