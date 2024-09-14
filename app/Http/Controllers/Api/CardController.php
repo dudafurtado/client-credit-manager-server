@@ -9,27 +9,33 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCardRequest;
 use App\Http\Requests\UpdateCardRequest;
 use App\Models\Card;
+use App\Models\Client;
 
 class CardController extends Controller
 {
-    public function index()
+    public function index(Client $client)
     {
-        $card = Card::paginate(10);
-        return response()->json($card, 200);
+        $cards = Card::where('client_id', $client->id)->paginate(10);
+
+        return response()->json($cards, 200);
     }
 
-    public function show(Card $card)
+    public function show(Client $client, Card $card)
     {
         return response()->json($card);
     }
 
-    public function store(StoreCardRequest $request)
+    public function store(StoreCardRequest $request, Client $client)
     {
         DB::beginTransaction();
         
         try {
-            $validated = $request->validated();
-            $card = Card::create($validated);
+            $card = Card::create([
+                'number' => $request->number,
+                'expire_date' => $request->expire_date,
+                'CVV' => $request->CVV,
+                'client_id' => $client->id
+            ]);
 
             DB::commit();
     
@@ -40,7 +46,7 @@ class CardController extends Controller
         }
     }
 
-    public function update(UpdateCardRequest $request, Card $card)
+    public function update(UpdateCardRequest $request, Client $client, Card $card)
     {
         DB::beginTransaction();
         
@@ -61,7 +67,7 @@ class CardController extends Controller
         }
     }
 
-    public function destroy(Card $card): JsonResponse
+    public function destroy(Client $client, Card $card): JsonResponse
     {
         try {
             $card->delete();

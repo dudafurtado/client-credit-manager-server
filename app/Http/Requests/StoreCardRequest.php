@@ -5,7 +5,10 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Models\Card;
+use App\Models\User;
 
 class StoreCardRequest extends FormRequest
 {
@@ -39,12 +42,12 @@ class StoreCardRequest extends FormRequest
         return [
             'number' => ['required', 'string', 'regex:/^\d{4} \d{4} \d{4} \d{4}$/', function ($attribute, $value, $fail) {
                 $this->validateCardNumber($value, $fail);
+                $this->validateUniqueCardNumber($value, $fail);
             }],
             'expire_date' => ['required', 'string', 'regex:/^(0[1-9]|1[0-2])\/\d{2}$/', function ($attribute, $value, $fail) {
                 $this->validateFutureDate($value, $fail);
             }],
             'CVV' => ['required', 'string', 'regex:/^\d{3}$/'],
-            'client_id' => ['nullable', 'exists:clients,id'],
         ];
     }
 
@@ -76,6 +79,30 @@ class StoreCardRequest extends FormRequest
 
         if(($sum % 10) !== 0) {
             return $fail('O número do cartão é inválido');
+        }
+    }
+
+
+    /**
+     * Verification about unique card number from clients list of user.
+     *
+     * @param string $value
+     * @param \Closure $fail
+     */
+    private function validateUniqueCardNumber($value, $fail)
+    {
+        $user = Auth::user();
+
+        if ($user instanceof User) {
+            $clientIds = $user->clients()->pluck('clients.id');
+
+            $cardExists = Card::whereIn('client_id', $clientIds)
+                ->where('number', $value)
+                ->exists();
+
+            if ($cardExists) {
+                return $fail('Este número de cartão já está registrado para um dos seus clientes.');
+            }
         }
     }
 
@@ -113,8 +140,6 @@ class StoreCardRequest extends FormRequest
             'CVV.required' => 'O CVV é obrigatório.',
             'CVV.string' => 'O CVV deve ser uma sequência de caracteres.',
             'CVV.regex' => 'O CVV deve ter exatamente 3 dígitos no formato 137.',
-
-            'client_id.exists' => 'O identificador do cliente é inválido ou não existe.',
         ];
     }
 }

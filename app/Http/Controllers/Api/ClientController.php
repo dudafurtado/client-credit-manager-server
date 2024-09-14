@@ -5,19 +5,30 @@ namespace App\Http\Controllers\Api;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\CheckClientOwnership;
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 use App\Models\Client;
-
-use function Laravel\Prompts\error;
+use App\Models\User;
 
 class ClientController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(CheckClientOwnership::class)->only(['show', 'update', 'destroy']);
+    }
+    
     public function index(): JsonResponse
     {
-        $clients = Client::paginate(10);
+        $user = Auth::user();
+        $clients = collect(); 
+
+        if ($user instanceof User) {
+            $clients = $user->clients()->paginate(10);
+        }
+
         return response()->json($clients, 200);
     }
 
@@ -32,19 +43,22 @@ class ClientController extends Controller
         DB::beginTransaction();
         
         try {
-            $client = Client::create([
-                'name' => $request->name,
-                'surname' => $request->surname,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'birth_date' => $request->birth_date,
-                'phone' => $request->phone,
-            ]);
+            $user = Auth::user(); 
+            $validated = $request->validated();
+            $client = Client::create($validated);
+
+            if ($user instanceof User) {
+                $user->clients()->attach($client->id, [
+                    'created_at' => now(), 
+                    'updated_at' => now() 
+                ]);
+            }
 
             DB::commit();
     
             return response()->json($client, 201);
         } catch (Exception $error) {
+            dd($error);
             DB::rollback();
             return response()->json($error, 400);
         }
@@ -58,7 +72,6 @@ class ClientController extends Controller
             $client->name = $request->filled('name') ? $request->name : $client->name;
             $client->surname = $request->filled('surname') ? $request->surname : $client->surname;
             $client->email = $request->filled('email') ? $request->email : $client->email;
-            $client->password = $request->filled('password') ? $request->password : $client->password;
             $client->birth_date = $request->filled('birth_date') ? $request->birth_date : $client->birth_date;
             $client->phone = $request->filled('phone') ? $request->phone : $client->phone;
 
@@ -75,13 +88,26 @@ class ClientController extends Controller
 
     public function destroy(Client $client): JsonResponse
     {
+        DB::beginTransaction();
+
         try {
-            $client->delete();
+            $user = Auth::user();
+
+            if ($user instanceof User) {
+                $user->clients()->updateExistingPivot($client->id, [
+                    'deleted_at' => now()
+                ]);
+            }
+
             $client->cards()->delete();
             $client->address()->delete();
+            $client->delete();
+            
+            DB::commit();
 
             return response()->json(null, 204);
         } catch (Exception $error) {
+            DB::rollback();
             return response()->json($error, 400);
         }
     }

@@ -5,7 +5,10 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Models\Card;
+use App\Models\User;
 
 class UpdateCardRequest extends FormRequest
 {
@@ -76,6 +79,29 @@ class UpdateCardRequest extends FormRequest
 
         if(($sum % 10) !== 0) {
             return $fail('O número do cartão é inválido');
+        }
+    }
+
+    /**
+     * Verification about unique card number from clients list of user.
+     *
+     * @param string $value
+     * @param \Closure $fail
+     */
+    private function validateUniqueCardNumber($value, $fail)
+    {
+        $user = Auth::user();
+
+        if ($user instanceof User) {
+            $clientIds = $user->clients()->pluck('clients.id');
+
+            $cardExists = Card::whereIn('client_id', $clientIds)
+                ->where('number', $value)
+                ->exists();
+
+            if ($cardExists) {
+                return $fail('Este número de cartão já está registrado para um dos seus clientes.');
+            }
         }
     }
 
