@@ -12,6 +12,7 @@ use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 use App\Models\Client;
 use App\Models\User;
+use Carbon\Carbon;
 
 class ClientController extends Controller
 {
@@ -49,8 +50,8 @@ class ClientController extends Controller
 
             if ($user instanceof User) {
                 $user->clients()->attach($client->id, [
-                    'created_at' => now(), 
-                    'updated_at' => now() 
+                    'created_at' => Carbon::now(), 
+                    'updated_at' => Carbon::now() 
                 ]);
             }
 
@@ -95,7 +96,7 @@ class ClientController extends Controller
 
             if ($user instanceof User) {
                 $user->clients()->updateExistingPivot($client->id, [
-                    'deleted_at' => now()
+                    'deleted_at' => Carbon::now(),
                 ]);
             }
 
