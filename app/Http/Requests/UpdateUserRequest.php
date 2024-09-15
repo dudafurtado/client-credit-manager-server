@@ -24,7 +24,7 @@ class UpdateUserRequest extends FormRequest
     {
         throw new HttpResponseException(
             response()->json([
-                'errors' => $validator->errors()
+                'error' => $validator->errors()
             ])->setStatusCode(422)
         );
     }
@@ -54,7 +54,7 @@ class UpdateUserRequest extends FormRequest
             'name.string' => 'O nome deve ser uma sequência de caracteres.',
             'name.max' => 'O nome não pode ter mais de :max caracteres.',
 
-            'email.email' => 'Necessário enviar email válido!',
+            'email.email' => 'Necessário enviar um email válido!',
             'email.unique' => 'Esse email já existe. Tente outro!',
             
             'password.min' => 'Senha com no mínimo :min caracteres!',

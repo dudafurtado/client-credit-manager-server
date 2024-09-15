@@ -23,7 +23,7 @@ class UpdateAddressRequest extends FormRequest
     {
         throw new HttpResponseException(
             response()->json([
-                'errors' => $validator->errors()
+                'error' => $validator->errors()
             ])->setStatusCode(422)
         );
     }
