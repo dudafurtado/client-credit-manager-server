@@ -6,12 +6,17 @@ use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CardController;
+use App\Http\Controllers\Api\RecoverPasswordController;
 use App\Http\Middleware\CheckUserOwnership;
 use App\Http\Middleware\CheckClientOwnership;
 
 Route::post('/users', [UserController::class, 'store']);
 
 Route::post('/login', [AuthController::class, 'store'])->name('login');
+
+Route::post('/forgot-password', [RecoverPasswordController::class, 'forgotPassword']);
+Route::post('/validate-code', [RecoverPasswordController::class, 'validateCode']);
+Route::post('/reset-password', [RecoverPasswordController::class, 'resetPassword']);
 
 Route::group(['middleware' => ['auth:sanctum']], function() {
   Route::get('/users', [UserController::class, 'index']); 
